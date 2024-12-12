@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Calm Green Study Hub</title>
+    <style>
+        /* Ensure the entire page is 100% height */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4; /* Light gray background */
+            color: #000; /* Black text */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 60px; /* Reduced top padding */
+        }
+
+        header {
+            background-color: #000000; /* Black header */
+            color: #fff;
+            padding: 15px; /* Reduced padding */
+            text-align: center;
+            border-bottom: 5px solid #444444; /* Darker black */
+        }
+
+        .container {
+            padding: 30px; /* Reduced padding */
+            text-align: center;
+            margin: 20px auto;
+            width: 300px; /* Increased width */
+            background-color: #ffffff; /* White background for form */
+            border-radius: 15px; /* Slightly larger radius for a bigger frame */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Increased shadow for a more prominent frame */
+        }
+
+        footer {
+            background-color: #000000; /* Black footer */
+            color: #fff;
+            padding: 10px; /* Reduced padding */
+            text-align: center;
+            border-top: 5px solid #444444; /* Darker black */
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 10px; /* Reduced bottom margin */
+            text-align: left;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px; /* Reduced padding for shorter fields */
+            border-radius: 8px; /* Slightly more rounded corners */
+            border: 1px solid #ddd;
+            margin-bottom: 10px; /* Reduced margin */
+            background-color: #f7f7f7; /* Light gray background for inputs */
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px; /* Reduced padding for a shorter button */
+            background-color: #000000; /* Black button */
+            border: 2px solid transparent; /* Invisible border initially */
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px; /* Slightly smaller font */
+            cursor: pointer;
+            position: relative; /* Allows border-down effect */
+            transition: all 0.3s ease; /* Smooth transition for border effect */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #333333; /* Dark gray on hover */
+            border-color: #666666; /* Gray border on hover */
+        }
+
+        button[type="submit"]:active {
+            background-color: #444444; /* Darker gray when pressed */
+            border-color: #000000; /* Even darker when clicked */
+            transform: translateY(2px); /* Push the button down when clicked */
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-content">
+    <div class="container">
+        <h2>Register</h2>
+        <form method="POST" action="{% url 'register' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            <div class="form-group">
+                <label for="password1">Password:</label>
+                <input type="password" id="password1" name="password1" placeholder="Enter your password" required>
+            </div>
+            <div class="form-group">
+                <label for="password2">Confirm Password:</label>
+                <input type="password" id="password2" name="password2" placeholder="Confirm your password" required>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
