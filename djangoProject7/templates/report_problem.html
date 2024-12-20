@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Issue</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <style>
+        #map {
+            height: 300px;
+            width: 100%;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+        #location-display {
+            font-size: 16px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Report an Issue</h1>
+
+    <!-- Report form -->
+    <form method="POST" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+        {% csrf_token %}
+        <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Submit a Report</h2>
+
+        <!-- Render the form fields -->
+        <div style="margin-bottom: 15px;">
+            {{ form.name.label_tag }}<br>
+            {{ form.name }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            {{ form.email.label_tag }}<br>
+            {{ form.email }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            {{ form.phone_number.label_tag }}<br>
+            {{ form.phone_number }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            {{ form.description.label_tag }}<br>
+            {{ form.description }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            {{ form.photo.label_tag }}<br>
+            {{ form.photo }}
+        </div>
+
+        <!-- Leaflet Map Container -->
+        <div id="map"></div>
+
+        <!-- Display selected location -->
+        <p style="text-align: center; margin-top: 10px; font-weight: bold;">
+            <strong>Location:</strong> <span id="location-display">Not selected</span>
+        </p>
+
+        <!-- Hidden input to store the selected location -->
+        <input type="hidden" id="location" name="location">
+
+        <!-- Submit button -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" style="padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007BFF; border: none; border-radius: 4px; cursor: pointer;">Submit Report</button>
+        </div>
+    </form>
+
+    <script>
+        // Initialize the map, set to Beersheba (31.252973, 34.791462)
+        var map = L.map('map').setView([31.252973, 34.791462], 13); // Centered on Beersheba
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add a draggable marker at the center (Beersheba)
+        var marker = L.marker([31.252973, 34.791462], { draggable: true }).addTo(map);
+
+        // Update the hidden input and location display when the marker is dragged
+        marker.on('dragend', function (event) {
+            var latLng = event.target.getLatLng();
+            document.getElementById('location').value = latLng.lat + ', ' + latLng.lng;
+            document.getElementById('location-display').textContent = latLng.lat + ', ' + latLng.lng;
+        });
+
+        // Allow the user to click on the map to set the marker
+        map.on('click', function (event) {
+            var latLng = event.latlng;
+            marker.setLatLng(latLng);
+            document.getElementById('location').value = latLng.lat + ', ' + latLng.lng;
+            document.getElementById('location-display').textContent = latLng.lat + ', ' + latLng.lng;
+        });
+    </script>
+
+</body>
+</html>
