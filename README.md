@@ -1,4 +1,7 @@
-Project Title: voice bridge :
+
+
+Project Title:
+voice bridge 
 The VoiceBridge website is a digital platform designed to enhance communication between citizens and local authorities, making the process of reporting infrastructure issues simpler, faster, and more efficient. Through the website, residents can report problems such as potholes, broken streetlights, or environmental hazards, and track their resolution in real time. Local authorities receive the reports instantly, prioritize them based on urgency, and address them in an organized manner. The platform improves urban quality of life by enabling swift resolution of infrastructure issues, fostering transparency, and building trust between residents and authorities. It is an essential tool in the era of smart cities, where technology is used to make urban living better.Getting Started
 These instructions will guide you through setting up the project on your local machine for development and testing purposes.
 Prerequisites
@@ -32,3 +35,11 @@ Sewar alatrash
 Maryam abu mdegam
 Hamdan abultaif 
 Snd alzparqa 
+
+
+Acknowledgments:
+We would like to express our appreciation to individuals whose code tutorials
+on YouTube contributed to our learning and the development of this project.
+Your tutorials have been instrumental in our journey. We also extend our
+gratitude to any other contributors whose code was utilized,
+as well as to parents and experts in childcare for their valuable insights and inspiration.
