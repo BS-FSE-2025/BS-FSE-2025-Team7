@@ -48,9 +48,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',  # ודא שזה קיים
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'DjangoProject6.urls'
+# settings.py
+
+APPEND_SLASH = True
 
 TEMPLATES = [
     {
@@ -71,7 +81,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DjangoProject6.wsgi.application'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+# SMTP settings (configure according to your email provider)
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail example; use your own SMTP server
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'elatrshnaghm@gmail.com'  # Use your email address here
+EMAIL_HOST_PASSWORD = 'hvijippszipohpna'  # Your email account password or App Password
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 

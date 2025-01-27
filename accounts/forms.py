@@ -1,11 +1,20 @@
 from django import forms
+from .models import Report
 from django import forms
+from .models import Report
 
 from django import forms
+from .models import Report
 
 from django import forms
+from .models import Report
 
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['name', 'email', 'phone_number', 'description', 'photo', 'status']
 
+    location = forms.CharField(widget=forms.HiddenInput())  # For storing the location data
 from django import forms
 from django.core.exceptions import ValidationError
 from accounts.models import Register ,Register2,Register3 # Adjust based on your structure
@@ -95,3 +104,9 @@ from django import forms
 from django import forms
 
 from django import forms
+from .models import Rating
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['rating','comment']
