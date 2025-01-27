@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 90vh; /* Set a fixed height */
+            width: 320px; /* Narrower width */
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 10px 0;
+            color: #4caf50;
+            font-size: 18px;
+        }
+
+        #chat-window {
+            padding: 10px;
+            height: 70%;
+            overflow-y: scroll;
+            flex-grow: 1;
+            background-color: #e5ddd5;
+            margin-bottom: 10px;
+            overflow-x: hidden;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .message .username {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #4caf50;
+            font-size: 12px;
+        }
+
+        .message .content {
+            background-color: #dcf8c6;
+            padding: 6px 10px;
+            border-radius: 10px;
+            max-width: 80%; /* Make the content box a bit smaller */
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+
+        .message.sent .content {
+            background-color: #34b7f1;
+            margin-left: auto;
+            color: white;
+        }
+
+        .message.received .content {
+            background-color: #e4e6eb;
+            color: #4f4f4f;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+        }
+
+        input, textarea {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-btn:hover {
+            background-color: #e60000;
+        }
+
+        /* Responsive Design */
+        @media only screen and (max-width: 600px) {
+            #chat-container {
+                height: 90vh; /* Ensure chat box takes almost all screen height */
+                width: 320px; /* Keep narrow width */
+            }
+
+            h1 {
+                font-size: 16px; /* Smaller title for smaller screens */
+            }
+
+            .message .content {
+                font-size: 13px;
+                padding: 5px 10px;
+            }
+
+            form {
+                padding: 8px;
+            }
+
+            input, textarea {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="chat-container">
+    <!-- Logout Button -->
+    <button class="logout-btn" onclick="logout()">Logout</button>
+
+    <h1>Welcome to the Chat!</h1>
+
+    <div id="chat-window">
+        {% for message in messages %}
+            <div class="message {% if message.name == 'Anonymous' %}sent{% else %}received{% endif %}">
+                <span class="username">{{ message.name }}:</span>
+                <span class="content">{{ message.content }}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form id="chat-form">
+        <input type="text" id="username" placeholder="Enter your name" required style="margin-bottom: 10px;">
+        <textarea id="message" rows="3" cols="50" placeholder="Type your message" required></textarea>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const csrftoken = document.querySelector('[name=csrf-token]').content;
+
+        // Set up AJAX with CSRF token
+        $.ajaxSetup({
+            headers: { 'X-CSRFToken': csrftoken }
+        });
+
+        $('#chat-form').on('submit', function (e) {
+            e.preventDefault();
+
+            const username = $('#username').val();
+            const content = $('#message').val();
+
+            if (username && content) {
+                $.post("{% url 'send_message' %}", {
+                    username: username,
+                    content: content
+                }, function (data) {
+                    if (data.status === 'success') {
+                        // Add the new message dynamically to the chat window
+                        $('#chat-window').append(`
+                            <div class="message sent">
+                                <span class="username">${username}:</span>
+                                <span class="content">${content}</span>
+                            </div>
+                        `);
+                        $('#message').val(''); // Clear the input
+                        $('#chat-window').scrollTop($('#chat-window')[0].scrollHeight); // Auto-scroll to the bottom
+                    }
+                });
+            }
+        });
+    });
+
+    function logout() {
+        sessionStorage.clear();
+        window.location.href = '/'; // Redirect to the homepage or logout page
+    }
+</script>
+
+</body>
+</html>
