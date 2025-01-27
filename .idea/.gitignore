@@ -1,8 +1,8 @@
 # Default ignored files
-/shelf/
-/workspace.xml
+/../../BS-FSE-2025-Team7 /.idea/shelf/
+/../../BS-FSE-2025-Team7 /.idea/workspace.xml
 # Editor-based HTTP Client requests
-/httpRequests/
+/../../BS-FSE-2025-Team7 /.idea/httpRequests/
 # Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
+/../../BS-FSE-2025-Team7 /.idea/dataSources/
+/../../BS-FSE-2025-Team7 /.idea/dataSources.local.xml
